@@ -1,0 +1,42 @@
+Github: https://github.com/916-Stan-Andrei/LFTC_Lab3
+
+
+PIFEntry Class
+The PIFEntry class represents an entry in a Program Internal Form table. It encapsulates information about a token and its associated extra information. This class is used to construct entries for the Program Internal Form table.
+
+
+IProgramInternalFormTable Interface
+The IProgramInternalFormTable interface is used to define a contract for classes that need to implement a program internal form table. It has a single method:
+addEntry(String tokenValue, int extraInfo)
+
+
+ProgramInternalFormTable Class
+The ProgramInternalFormTable class is responsible for maintaining a list of PIFEntry objects, effectively representing a Program Internal Form table.
+Constructor ProgramInternalFormTable()
+Description: Initializes an empty Program Internal Form table.
+
+Public Methods
+
+addEntry(String value, int extraInfo)
+Parameters:
+    value (String): The value of the token to be added to the Program Internal Form table.
+    extraInfo (int): Additional information associated with the token (e.g., symbol table reference or line number).
+Description: Adds a new entry to the Program Internal Form table with the specified token value and extra information.
+
+toString(): String
+Return Type: String
+Description: Provides a string representation of the entire Program Internal Form table. It lists each entry with a sequential index, token value, and associated extra information.
+
+USED REGEX EXPLANATION
+Identifier regex: [a-zA-Z_][a-zA-Z0-9_]*
+    The first part between the first brackets matches the first character in a sequence. It specifies that the character must be a letter (either uppercase or lowercase) or an underscore _. The second part matches the remaining characters in the sequence. It specifies that these characters can be letters (uppercase or lowercase), digits (0-9), or underscores _. The * means that there can be zero or more of these characters following the first character.
+Int constant regex: [+-]?[1-9][0-9]*|0
+    The first part tells that we can have + or - for signed integers, but the '?' makes it optional in case of unsigned integers. The second part tells us that we can one or more digits starting with a digit different from 0. And the '|0' allows us to have the digit 0.
+String constant regex: \"[a-zA-Z0-9_\s]*\"
+    The quotes are special characters in regex so we need to use \ before them if we want to get our string constant. This part of the regex matches a sequence of characters enclosed within double quotation marks. It allows for characters that are letters (uppercase or lowercase), digits (0-9), underscores _, and whitespace characters (including spaces, tabs, and newlines). The * means that there can be zero or more such characters between the double quotation marks.
+Bool constant regex: true|false
+    We can either have true or false
+Float constant regex: [-+]?\d+(\.\d+)?
+    The first part is the same with the one from int constant [-+]? (optional sign).This part: \d+ matches one or more digits. It ensures that there is at least one digit in the number. The last part matches an optional fractional part of the number. It consists of a period . followed by one or more digits. The ? makes this part optional, so a number can be an integer (with no fractional part) or a decimal number with a fractional part.
+
+
