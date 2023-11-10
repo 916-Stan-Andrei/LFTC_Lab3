@@ -1,6 +1,6 @@
 package DataStructures;
 
-public interface IMyHashTable<K, V> {
+public interface IHashTable<K, V> {
     int getCapacity();
 
     int hash(K key);

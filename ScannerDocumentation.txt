@@ -1,0 +1,19 @@
+GitHub:https://github.com/916-Stan-Andrei/LFTC_Lab3
+
+The program is a command-line lexical analyzer that allows the user to analyze different source code files for lexical correctness. It employs regular expressions to define token patterns, uses the MyScanner class to identify tokens, and generates a Program Internal Form (PIF) and a Symbol Table (ST). The user can choose input files, and the program provides feedback on lexical correctness while generating output files for further analysis. Error handling is implemented to detect and report lexical errors.
+
+Token Class:
+The Token class is a simple data class representing a token:
+    type: Represents the type of the token.
+    value: Represents the actual value of the token.
+
+IScanner Interface:
+    List<Token> scan(String inputText): This method takes a string as input and returns a list of tokens.
+    String detect(String token): This method takes a token as input and returns its type.
+
+MyScanner Class:
+The MyScanner class implements the IScanner interface and provides functionality to scan input text for various tokens. Key components and methods include:
+    Regex Patterns: The class uses regular expressions to define patterns for different token types such as reserved words, operators, separators, identifiers, integer constants, string constants, and boolean constants.
+    Static Initialization Block: Reads patterns for reserved words, operators, and separators from a file named "token.in" during class initialization.
+    scan Method: Scans input text using the defined regex patterns, creates a list of Token objects, and returns the list.
+    detect Method: Determines the type of a given token based on its pattern match against predefined regex patterns.

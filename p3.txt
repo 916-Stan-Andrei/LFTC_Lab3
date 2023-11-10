@@ -1,0 +1,14 @@
+var a int;
+var b int;
+var r int;
+if (a == 0 || b == 0){
+    write("GCD is 0");
+}
+else{
+    while(b != 0){
+        r = a%b;
+        a = b;
+        b = r;
+    }
+    write("GCD is ", a);
+}

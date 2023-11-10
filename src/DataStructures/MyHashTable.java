@@ -3,7 +3,7 @@ package DataStructures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyHashTable<K, V> implements IMyHashTable<K, V>{
+public class MyHashTable<K, V> implements IHashTable<K, V> {
     private final List<List<K>> myHashTable;
     private final int capacity;
 

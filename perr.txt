@@ -1,0 +1,14 @@
+var 0a int;
+var b int;
+var c int;
+var max int;
+var min int;
+
+max = 1a;
+if (b > maxi){
+    max = b;
+}
+if (c > max){
+    max = c;
+}
+writ#e(max);

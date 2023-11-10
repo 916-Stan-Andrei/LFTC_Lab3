@@ -1,10 +1,10 @@
 package SymbolTable;
 
-import DataStructures.IMyHashTable;
+import DataStructures.IHashTable;
 import DataStructures.MyHashTable;
 
 public class SymbolTable<K> implements ISymbolTable<K> {
-    private final IMyHashTable<K, Object> hashTable;
+    private final IHashTable<K, Object> hashTable;
 
     public SymbolTable(int size) {
         this.hashTable = new MyHashTable<>(size);

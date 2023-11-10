@@ -1,0 +1,14 @@
+var a int;
+var b int;
+var c int;
+var max int;
+var min int;
+
+max = a;
+if (b > max){
+    max = b;
+}
+if (c > max){
+    max = c;
+}
+write(max);

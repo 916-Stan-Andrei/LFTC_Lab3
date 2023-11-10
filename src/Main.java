@@ -3,12 +3,13 @@ import Scanner.MyScanner;
 import Scanner.Token;
 import SymbolTable.SymbolTable;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -16,102 +17,89 @@ public class Main {
         ProgramInternalFormTable PIF = new ProgramInternalFormTable();
         SymbolTable<Object> symbolTable = new SymbolTable<>(10);
 
-        //p1
+        Scanner scanner = new Scanner(System.in);
+        char choice;
 
-        String p1 = "var a int;" +
-                "var b int;" +
-                "var c int;" +
-                "var max int;" +
-                "var min int;" +
-                "max = a;" +
-                "if (b > max) {" +
-                "    max = b;" +
-                "}" +
-                "if (c > max) {" +
-                "    max = c;" +
-                "}" +
-                "write(max);";
+        do {
+            System.out.println("Choose a file:");
+            System.out.println("1. p1.txt");
+            System.out.println("2. p2.txt");
+            System.out.println("3. p3.txt");
+            System.out.println("4. perr.txt");
+            System.out.println("Press 'x' to exit.");
 
-        //p2
+            choice = scanner.next().charAt(0);
+            String filePath;
 
-        String p2 = "var a int;" +
-                "var b int;" +
-                "var r int;" +
-                "if (a == 0 || b == 0) {" +
-                "    write(\"GCD=0\");" +
-                "}" +
-                "else {" +
-                "    while (b != 0) {" +
-                "        r = a % b;" +
-                "        a = b;" +
-                "        b = r;" +
-                "    }" +
-                "    write(\"GCD=\" + a);" +
-                "}";
-
-        //p3
-
-        String p3 = "var n int;" +
-                "var numbers int[];" +
-                "var i int;" +
-                "var sum int;" +
-                "int n, numbers, i, sum;" +
-                "write(n);" +
-                "sum = 0;" +
-                "for (i = 0; i < n; i++) {" +
-                "    readInt(numbers[i]);" +
-                "    sum = sum + numbers[i];" +
-                "}" +
-                "write(sum);";
-
-        //perr
-
-        String perr = "var a int;" +
-                "var b int;" +
-                "var c int;" +
-                "var max int;" +
-                "var min int;" +
-                "max = a;" +
-                "if (b > max) {" +
-                "    max = b;" +
-                "}" +
-                "if (c > max) {" +
-                "    max = c;" +
-                "}" +
-                "write(max);";
-
-        List<Token> tokens = myScanner.scan(p1);
-        for (Token token : tokens){
-            if (Objects.equals(token.getType(), "Identifier") || Objects.equals(token.getType(), "Constant")){
-                symbolTable.addHash(token.getValue());
+            switch (choice) {
+                case '1' -> filePath = "p1.txt";
+                case '2' -> filePath = "p2.txt";
+                case '3' -> filePath = "p3.txt";
+                case '4' -> filePath = "perr.txt";
+                case 'x', 'X' -> {
+                    System.out.println("Exiting program.");
+                    return;
+                }
+                default -> {
+                    System.out.println("Invalid choice. Please try again.");
+                    continue;
+                }
             }
-        }
 
-        for (Token token : tokens) {
-            System.out.println("Type: " + token.getType() + ", Value: " + token.getValue());
-            if (Objects.equals(token.getType(), "ReservedWord") || Objects.equals(token.getType(), "Separator")
-                || Objects.equals(token.getType(), "Operator")){
-                PIF.addEntry(token.getValue(), -1);
-            }
-            else if (Objects.equals(token.getType(), "Identifier") || Objects.equals(token.getType(), "Constant")){
-                int index = symbolTable.getPositionHash(token.getValue());
-                PIF.addEntry(token.getValue(), index);
-            }
-            else{
-                System.out.println("Lexical Error");
-            }
-        }
+            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+                StringBuilder codeBuilder = new StringBuilder();
+                String line;
+                int lineNumber = 0;
 
-        try {
-            FileWriter pifFileWriter = new FileWriter("PIF.out");
-                pifFileWriter.write(String.valueOf(PIF));
-            pifFileWriter.close();
+                boolean isCorrect = true;
+                while ((line = br.readLine()) != null) {
+                    codeBuilder.append(line).append("\n");
+                    lineNumber++;
 
-            FileWriter stFileWriter = new FileWriter("ST.out");
-                stFileWriter.write(String.valueOf(symbolTable));
-            stFileWriter.close();
-        } catch (IOException e) {
-            System.err.println("Error writing to output files.");
-        }
+                    List<Token> tokens = myScanner.scan(line);
+
+                    for (Token token : tokens) {
+                        if (Objects.equals(token.getType(), "Identifier") || Objects.equals(token.getType(), "Constant")) {
+                            symbolTable.addHash(token.getValue());
+                        }
+                    }
+
+                    for (Token token : tokens) {
+                        System.out.println("Type: " + token.getType() + ", Value: " + token.getValue());
+                        if (Objects.equals(token.getType(), "ReservedWord") || Objects.equals(token.getType(), "Separator")
+                                || Objects.equals(token.getType(), "Operator")) {
+                            PIF.addEntry(token.getValue(), -1);
+                        } else if (Objects.equals(token.getType(), "Identifier") || Objects.equals(token.getType(), "Constant")
+                                || Objects.equals(token.getType(), "IntegerConstant")
+                                || Objects.equals(token.getType(), "StringConstant")
+                                || Objects.equals(token.getType(), "BooleanConstant")
+                                || Objects.equals(token.getType(), "FloatConstant")
+                        ) {
+                            int index = symbolTable.getPositionHash(token.getValue());
+                            PIF.addEntry(token.getValue(), index);
+                        } else {
+                            System.out.println("Lexical Error at line " + lineNumber);
+                            isCorrect = false;
+                        }
+                    }
+                }
+                if (isCorrect) System.out.println("Lexically correct");
+
+
+                try {
+                    FileWriter pifFileWriter = new FileWriter("PIF.out");
+                    pifFileWriter.write(String.valueOf(PIF));
+                    pifFileWriter.close();
+
+                    FileWriter stFileWriter = new FileWriter("ST.out");
+                    stFileWriter.write(String.valueOf(symbolTable));
+                    stFileWriter.close();
+                } catch (IOException e) {
+                    System.err.println("Error writing to output files.");
+                }
+            } catch (IOException e) {
+                System.err.println("Error reading from the file.");
+            }
+        }while (choice != 'x' && choice != 'X');
     }
 }
