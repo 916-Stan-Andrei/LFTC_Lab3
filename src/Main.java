@@ -65,7 +65,7 @@ public class Main {
                     }
 
                     for (Token token : tokens) {
-                        System.out.println("Type: " + token.getType() + ", Value: " + token.getValue());
+                        //System.out.println("Type: " + token.getType() + ", Value: " + token.getValue());
                         if (Objects.equals(token.getType(), "ReservedWord") || Objects.equals(token.getType(), "Separator")
                                 || Objects.equals(token.getType(), "Operator")) {
                             PIF.addEntry(token.getValue(), -1);

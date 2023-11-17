@@ -1,0 +1,54 @@
+state q0
+state q1
+state q2
+state q3
+state q4
+alphabet -
+alphabet +
+alphabet 0
+alphabet 1
+alphabet 2
+alphabet 3
+alphabet 4
+alphabet 5
+alphabet 6
+alphabet 7
+alphabet 8
+alphabet 9
+transition q0 - q1
+transition q0 + q1
+transition q0 0 q3
+transition q0 1 q2
+transition q0 2 q2
+transition q0 3 q2
+transition q0 4 q2
+transition q0 5 q2
+transition q0 6 q2
+transition q0 7 q2
+transition q0 8 q2
+transition q0 9 q2
+transition q1 0 q3
+transition q1 1 q2
+transition q1 2 q2
+transition q1 3 q2
+transition q1 4 q2
+transition q1 5 q2
+transition q1 6 q2
+transition q1 7 q2
+transition q1 8 q2
+transition q1 9 q2
+transition q2 0 q2
+transition q2 1 q2
+transition q2 2 q2
+transition q2 3 q2
+transition q2 4 q2
+transition q2 5 q2
+transition q2 6 q2
+transition q2 7 q2
+transition q2 8 q2
+transition q2 9 q2
+transition q3 0 q3
+initial q0
+final q2
+final q3
+final q4

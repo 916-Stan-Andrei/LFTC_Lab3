@@ -1,1 +1,1 @@
-SymbolTable = { [[a, a], [b, b, b], [c, c, c], [min, n, n, n, n], [], [], [], [], [div_number, i, div_number, i, i, div_number, i, div_number, div_number, div_number, div_number], [max, max, max, max, max, max, max]] }
+SymbolTable = { [[a, a], [b, b, b, b, b, b], [c, c, c, c, c, c], [min, min], [e], [writ], [maxi], [], [], [max, max, max, max, max, max, max, max, max, max, max, max, max]] }

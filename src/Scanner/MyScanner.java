@@ -1,6 +1,8 @@
 package Scanner;
 
 
+import FA.FiniteAutomaton;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,8 +15,8 @@ public class MyScanner implements IScanner {
     private static String RESERVED_WORDS_REGEX;
     private static String OPERATORS_REGEX;
     private static String SEPARATORS_REGEX;
-    private static final String IDENTIFIER_REGEX = "[a-zA-Z_][a-zA-Z0-9_]*";
-    private static final String INT_CONSTANT_REGEX = "^([+-]?[1-9][0-9]*|0)([^a-zA-Z])$";
+    private static final String IDENTIFIER_REGEX = "(?<![\\d])\\b[a-zA-Z_][a-zA-Z0-9_]*\\b";
+    private static final String INT_CONSTANT_REGEX = "([+-]?([1-9][0-9]*)|0)";
     private static final String STRING_CONSTANT_REGEX = "\"[a-zA-Z0-9_\\s]*\"";
     private static final String BOOL_CONSTANT_REGEX = "true|false";
 
@@ -48,7 +50,7 @@ public class MyScanner implements IScanner {
     @Override
     public List<Token> scan(String inputText) {
         List<Token> tokens = new ArrayList<>();
-        String regexPattern = String.format("(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|([^\\s])",
+        String regexPattern = String.format("(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s)",
                 RESERVED_WORDS_REGEX,
                 OPERATORS_REGEX,
                 SEPARATORS_REGEX,
@@ -62,10 +64,22 @@ public class MyScanner implements IScanner {
 
         Matcher matcher = pattern.matcher(inputText);
 
+        int lastMatchEnd = 0;
+
         while (matcher.find()) {
             String token = matcher.group();
+
+            int firstMatch = matcher.start();
+            if (firstMatch > lastMatchEnd) {
+                // Lexical error for the portion between last match and the current match
+                String errorToken = inputText.substring(lastMatchEnd, matcher.start());
+                tokens.add(new Token("LEXICAL_ERROR", errorToken));
+            }
+
             String tokenType = detect(token);
             tokens.add(new Token(tokenType, token));
+
+            lastMatchEnd = matcher.end();
         }
 
         return tokens;

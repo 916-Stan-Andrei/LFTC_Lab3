@@ -1,7 +1,8 @@
+div_number = 0;
 var n int;
 var div_number int;
 var i int;
-div_number = 0;
+
 for (i = 2; i <= div_number//2; i++){
     if (n % div_number == 0){
         div_number = div_number + 1;
