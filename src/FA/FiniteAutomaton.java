@@ -1,9 +1,8 @@
 package FA;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 public class FiniteAutomaton {
     public Set<String> states;
@@ -46,4 +45,29 @@ public class FiniteAutomaton {
 
         return finalStates.contains(currentState);
     }
+
+    public void readFAFromFile(String filename){
+        try {
+            File file = new File(filename);
+            Scanner scanner = new Scanner(file);
+
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split("\\s+");
+
+                switch (parts[0]) {
+                    case "state" -> this.states.add(parts[1]);
+                    case "alphabet" -> this.alphabet.add(parts[1].charAt(0));
+                    case "transition" -> this.addTransition(parts[1], parts[2].charAt(0), parts[3]);
+                    case "initial" -> this.initialState = parts[1];
+                    case "final" -> this.finalStates.add(parts[1]);
+                }
+            }
+
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        }
+    }
 }
+

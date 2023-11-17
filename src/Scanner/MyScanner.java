@@ -87,6 +87,8 @@ public class MyScanner implements IScanner {
 
     @Override
     public String detect(String token) {
+        FiniteAutomaton FA = new FiniteAutomaton();
+        FA.readFAFromFile("FA.in");
         if (token.matches(RESERVED_WORDS_REGEX)) {
             return "ReservedWord";
         } else if (token.matches(OPERATORS_REGEX)) {
@@ -95,7 +97,7 @@ public class MyScanner implements IScanner {
             return "Separator";
         } else if (token.matches(IDENTIFIER_REGEX)) {
             return "Identifier";
-        } else if (token.matches(INT_CONSTANT_REGEX)) {
+        } else if (FA.isAccepted(token)) {
             return "IntegerConstant";
         } else if (token.matches(STRING_CONSTANT_REGEX)) {
             return "StringConstant";
