@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class MainFA {
     public static void main(String[] args) {
         FiniteAutomaton fa = new FiniteAutomaton();
-        readFAFromFile("FA.in", fa);
+        fa.readFAFromFile("FA.in");
 
         Scanner scanner = new Scanner(System.in);
         int choice;
@@ -52,30 +52,6 @@ public class MainFA {
         } while (choice != 7);
 
         scanner.close();
-    }
-
-    public static void readFAFromFile(String filename, FiniteAutomaton fa) {
-        try {
-            File file = new File(filename);
-            Scanner scanner = new Scanner(file);
-
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] parts = line.split("\\s+");
-
-                switch (parts[0]) {
-                    case "state" -> fa.states.add(parts[1]);
-                    case "alphabet" -> fa.alphabet.add(parts[1].charAt(0));
-                    case "transition" -> fa.addTransition(parts[1], parts[2].charAt(0), parts[3]);
-                    case "initial" -> fa.initialState = parts[1];
-                    case "final" -> fa.finalStates.add(parts[1]);
-                }
-            }
-
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found: " + e.getMessage());
-        }
     }
 }
 

@@ -20,7 +20,7 @@ public class MyScanner implements IScanner {
     private static final String STRING_CONSTANT_REGEX = "\"[a-zA-Z0-9_\\s]*\"";
     private static final String BOOL_CONSTANT_REGEX = "true|false";
 
-    //private static final String FLOAT_CONSTANT_REGEX = "[-+]?\\d+(\\.\\d+)?(?!\\w)";
+    private static final String FLOAT_CONSTANT_REGEX = "[-+]?\\d+(\\.\\d+)?(?!\\w)";
 
 
     static {
@@ -50,15 +50,15 @@ public class MyScanner implements IScanner {
     @Override
     public List<Token> scan(String inputText) {
         List<Token> tokens = new ArrayList<>();
-        String regexPattern = String.format("(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s)",
+        String regexPattern = String.format("(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s)|(%s)",
                 RESERVED_WORDS_REGEX,
                 OPERATORS_REGEX,
                 SEPARATORS_REGEX,
                 STRING_CONSTANT_REGEX,
                 IDENTIFIER_REGEX,
                 INT_CONSTANT_REGEX,
-                BOOL_CONSTANT_REGEX
-                /*FLOAT_CONSTANT_REGEX*/);
+                BOOL_CONSTANT_REGEX,
+                FLOAT_CONSTANT_REGEX);
 
         Pattern pattern = Pattern.compile(regexPattern);
 
@@ -87,25 +87,28 @@ public class MyScanner implements IScanner {
 
     @Override
     public String detect(String token) {
-        FiniteAutomaton FA = new FiniteAutomaton();
-        FA.readFAFromFile("FA.in");
+        FiniteAutomaton integerConstantFA = new FiniteAutomaton();
+        integerConstantFA.readFAFromFile("integerConstantFA.in");
+        FiniteAutomaton identifierFA = new FiniteAutomaton();
+        identifierFA.readFAFromFile("identifierFA.in");
+
         if (token.matches(RESERVED_WORDS_REGEX)) {
             return "ReservedWord";
         } else if (token.matches(OPERATORS_REGEX)) {
             return "Operator";
         } else if (token.matches(SEPARATORS_REGEX)) {
             return "Separator";
-        } else if (token.matches(IDENTIFIER_REGEX)) {
+        } else if (identifierFA.isAccepted(token)) {
             return "Identifier";
-        } else if (FA.isAccepted(token)) {
+        } else if (integerConstantFA.isAccepted(token)) {
             return "IntegerConstant";
         } else if (token.matches(STRING_CONSTANT_REGEX)) {
             return "StringConstant";
         } else if (token.matches(BOOL_CONSTANT_REGEX)) {
             return "BooleanConstant";
-        }// else if (token.matches(FLOAT_CONSTANT_REGEX)) {
-           // return "FloatConstant";
-        //}
+        } else if (token.matches(FLOAT_CONSTANT_REGEX)) {
+            return "FloatConstant";
+        }
         else {
             return "LexicalError";
         }
