@@ -1,0 +1,33 @@
+GitHub: https://github.com/916-Stan-Andrei/LFTC_Lab3
+
+FiniteAutomaton Class
+Fields:
+    states: A set containing all the states of the finite automaton.
+    alphabet: A set containing the symbols in the alphabet of the finite automaton.
+    transitions: A map representing transitions between states upon input of specific symbols.
+    initialState: A string representing the initial state of the finite automaton.
+    finalStates: A set containing the final/accepting states of the finite automaton.
+Methods:
+    addTransition: Adds a transition from one state to another upon receiving a symbol.
+    isAccepted: Checks whether a given sequence is accepted by the finite automaton based on its transitions and final states.
+    readFAFromFile: Reads the finite automaton's structure from a file and populates its states, alphabet, transitions, initial state, and final states accordingly.
+        The readFAFromFile method reads a file that defines the finite automaton structure in a specific format. It interprets lines starting with keywords like "state", "alphabet," "transition," "initial," or "final" and updates the respective parts of the automaton based on the information provided in the file.
+
+MainFA Class
+The MainFA class serves as the entry point and provides a menu-driven interface to interact with a Finite Automaton represented by the FiniteAutomaton class.
+Functionality:
+    Displays information about the finite automaton based on user choices.
+    Allows the user to input a sequence and verifies whether the sequence is accepted by the finite automaton using the isAccepted method.
+
+EBNF format in which the FA.in file should be written   
+    file        ::= (line)*
+    line        ::= state_line | alphabet_line | transition_line | initial_line | final_line
+    state_line  ::= "state" SPACE state_name
+    alphabet_line ::= "alphabet" SPACE symbol
+    transition_line ::= "transition" SPACE state_name SPACE symbol SPACE state_name
+    initial_line ::= "initial" SPACE state_name
+    final_line  ::= "final" SPACE state_name
+
+    state_name  ::= (letter | digit | "_")+
+    symbol      ::= any_character_except_space
+    SPACE       ::= " "
